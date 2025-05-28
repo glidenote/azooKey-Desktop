@@ -104,6 +104,9 @@ public enum InputState: Sendable, Hashable {
                 } else {
                     return (.enterFirstCandidatePreviewMode, .transition(.previewing))
                 }
+            case .tab:
+                // Tabキーで候補選択モードに入る
+                return (.enterCandidateSelectionMode, .transition(.selecting))
             case let .function(function):
                 switch function {
                 case .six:
@@ -136,7 +139,7 @@ public enum InputState: Sendable, Hashable {
                 } else {
                     return (.fallthrough, .fallthrough)
                 }
-            case .unknown, .tab:
+            case .unknown:
                 return (.fallthrough, .fallthrough)
             }
         case .previewing:
@@ -150,6 +153,9 @@ public enum InputState: Sendable, Hashable {
             case .enter:
                 return (.commitMarkedText, .transition(.none))
             case .space:
+                return (.enterCandidateSelectionMode, .transition(.selecting))
+            case .tab:
+                // Tabキーで候補選択モードに入る
                 return (.enterCandidateSelectionMode, .transition(.selecting))
             case .escape:
                 return (.hideCandidateWindow, .transition(.composing))
@@ -179,7 +185,7 @@ public enum InputState: Sendable, Hashable {
                 }
             case .editSegment(let count):
                 return (.editSegment(count), .transition(.selecting))
-            case .unknown, .suggest, .tab:
+            case .unknown, .suggest:
                 return (.fallthrough, .fallthrough)
             }
         case .selecting:
@@ -203,6 +209,13 @@ public enum InputState: Sendable, Hashable {
                 }
             case .space:
                 // シフトが入っている場合は上に移動する
+                if event.modifierFlags.contains(.shift) {
+                    return (.selectPrevCandidate, .fallthrough)
+                } else {
+                    return (.selectNextCandidate, .fallthrough)
+                }
+            case .tab:
+                // Tabキーで次の候補を選択する（Shift+Tabで前の候補を選択）
                 if event.modifierFlags.contains(.shift) {
                     return (.selectPrevCandidate, .fallthrough)
                 } else {
@@ -246,7 +259,7 @@ public enum InputState: Sendable, Hashable {
                 return (.consume, .fallthrough)
             case .英数:
                 return (.commitMarkedTextAndSelectInputLanguage(.english), .transition(.none))
-            case .unknown, .suggest, .tab:
+            case .unknown, .suggest:
                 return (.fallthrough, .fallthrough)
             }
         case .replaceSuggestion:
