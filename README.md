@@ -74,10 +74,41 @@ git submodule update --init
 
 `install.sh`でビルドが成功しない場合、以下をご確認ください。
 
+#### 1. Git LFSとサブモジュールの初期化
+
+リソースファイル（機械学習モデルなど）が見つからないエラーが発生する場合：
+
+```bash
+# Git LFSをインストール（Homebrewを使用）
+brew install git-lfs
+
+# Git LFSを初期化
+git lfs install
+
+# サブモジュールを初期化・更新
+git submodule update --init --recursive
+
+# 各サブモジュールでGit LFSファイルを取得
+cd azooKeyMac/Resources/base_n5_lm
+git reset --hard HEAD
+
+cd ../zenz-v3-small-gguf
+git reset --hard HEAD
+
+# プロジェクトルートに戻る
+cd ../../..
+```
+
+#### 2. コード署名の問題
+
+「No profiles for team」や「No Account for Team」エラーが発生する場合、`install.sh`は自動的にコード署名を無効化してローカル開発用にビルドします。手動で対処する場合は以下を確認してください：
+
 * XcodeのGUI上で「Team ID」を変更する必要がある場合があります
 * 「Packages are not supported when using legacy build locations, but the current project has them enabled.」と表示される場合は[https://qiita.com/glassmonkey/items/3e8203900b516878ff2c](https://qiita.com/glassmonkey/items/3e8203900b516878ff2c)を参考に、Xcodeの設定をご確認ください
 
-変換精度がリリース版に比べて悪いと感じた場合、以下をご確認ください。
+#### 3. 変換精度の確認
+
+変換精度がリリース版に比べて悪いと感じた場合、以下をご確認ください：
 * Git LFSが導入されていない環境では、重みファイルがローカル環境に落とせていない場合があります。`azooKey-Desktop/azooKeyMac/Resources/zenz-v3-small-gguf/ggml-model-Q5_K_M.gguf`が70MB程度のファイルとなっているかを確認してください
 
 ### pkgファイルの作成
