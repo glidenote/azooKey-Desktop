@@ -1,0 +1,42 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# azooKey-Desktop プロジェクト概要
+
+## プロジェクトについて
+azooKey-DesktopはmacOS用のオープンソース日本語入力システムです。ニューラルかな漢字変換エンジン「Zenzai」を搭載し、高精度な変換を提供します。
+
+## 主要ディレクトリ構造
+
+### メインアプリケーション
+- [azooKeyMac/](mdc:azooKeyMac/) - メインアプリケーションのソースコード
+  - [AppDelegate.swift](mdc:azooKeyMac/AppDelegate.swift) - アプリケーションのエントリーポイント
+  - [InputController/](mdc:azooKeyMac/InputController/) - 入力制御関連のコード
+  - [Resources/](mdc:azooKeyMac/Resources/) - リソースファイル（機械学習モデル等）
+  - [Windows/](mdc:azooKeyMac/Windows/) - ウィンドウ関連のUI
+  - [Info.plist](mdc:azooKeyMac/Info.plist) - アプリケーション設定
+
+### コアライブラリ
+- [Core/](mdc:Core/) - Swift Packageとして管理されるコアライブラリ
+  - [Package.swift](mdc:Core/Package.swift) - パッケージ定義
+
+### テスト
+- [azooKeyMacTests/](mdc:azooKeyMacTests/) - ユニットテスト
+- [azooKeyMacUITests/](mdc:azooKeyMacUITests/) - UIテスト
+
+### ビルド・配布
+- [install.sh](mdc:install.sh) - 開発版ビルド・インストールスクリプト
+- [pkgbuild.sh](mdc:pkgbuild.sh) - 配布用パッケージ作成スクリプト
+- [azooKeyMac.xcodeproj/](mdc:azooKeyMac.xcodeproj/) - Xcodeプロジェクトファイル
+
+## 開発環境
+- macOS 14+
+- Xcode 16+
+- Git LFS（機械学習モデル用）
+- SwiftLint（コード品質管理）
+
+## 設定ファイル
+- [.swiftlint.yml](mdc:.swiftlint.yml) - SwiftLintの設定
+- [.gitmodules](mdc:.gitmodules) - Gitサブモジュール設定

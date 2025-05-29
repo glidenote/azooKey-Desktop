@@ -1,0 +1,59 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 開発ガイドライン
+
+## コーディング規約
+
+### Swift言語規約
+- [.swiftlint.yml](mdc:.swiftlint.yml)に従ってSwiftLintを使用
+- 行の長さ制限は無効化（エディタで折り返し設定を推奨）
+- ファイル・関数・型の長さ制限は無効化
+- implicit returnを推奨
+- importは自動ソート
+- 演算子の左右に空白を配置
+
+### ファイル構成
+- 1ファイル200行程度を上限とし、機能ごとにファイルを分割
+- 関連する機能は同一ディレクトリにまとめる
+- テストファイルは対応するソースファイルと同じ構造で配置
+
+## 主要コンポーネント
+
+### 入力制御システム
+- [azooKeyMacInputController.swift](mdc:azooKeyMac/InputController/azooKeyMacInputController.swift) - メインの入力制御クラス
+- [SegmentsManager.swift](mdc:azooKeyMac/InputController/SegmentsManager.swift) - セグメント管理
+- [UserAction+getUserAction.swift](mdc:azooKeyMac/InputController/UserAction+getUserAction.swift) - ユーザーアクション処理
+
+### AI機能
+- [OpenAIClient.swift](mdc:azooKeyMac/InputController/OpenAIClient.swift) - LLMによる「いい感じ変換」機能
+
+## ビルド・デバッグ手順
+
+### 開発版ビルド
+```bash
+# サブモジュール更新
+git submodule update --init --recursive
+
+# ビルド＆インストール
+./install.sh
+```
+
+### トラブルシューティング
+1. Git LFSとサブモジュールの初期化が必要
+2. コード署名の問題は自動的に無効化される
+3. 機械学習モデルファイルのサイズ確認（70MB程度）
+
+## 品質管理
+- SwiftLintによる静的解析
+- ユニットテスト・UIテストの実行
+- セキュリティとパフォーマンスへの配慮
+- メンテナンス性を重視した設計
+
+## コミット規約
+- コミットメッセージは英語で記述
+- 機能追加: `feat: add new feature`
+- バグ修正: `fix: resolve issue`
+- リファクタリング: `refactor: improve code structure`

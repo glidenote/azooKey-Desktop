@@ -1,0 +1,105 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# テスト戦略とデバッグ
+
+## テスト構成
+
+### ユニットテスト
+- [azooKeyMacTests/](mdc:azooKeyMacTests/) - 単体テスト
+- 入力制御ロジックのテスト
+- 変換エンジンのテスト
+- ユーティリティ関数のテスト
+
+### UIテスト
+- [azooKeyMacUITests/](mdc:azooKeyMacUITests/) - UI自動テスト
+- 候補ウィンドウの表示テスト
+- キーボード操作のテスト
+- 設定画面のテスト
+
+## テスト実行
+
+### Xcodeでのテスト実行
+```bash
+# 全テストの実行
+xcodebuild test -scheme azooKeyMac
+
+# 特定のテストクラスの実行
+xcodebuild test -scheme azooKeyMac -only-testing:azooKeyMacTests/InputControllerTests
+```
+
+### 継続的インテグレーション
+- GitHub Actionsでの自動テスト
+- プルリクエスト時の自動実行
+- リリース前の品質チェック
+
+## デバッグ手法
+
+### 開発時のデバッグ
+1. **プロセスの再起動**
+   ```bash
+   # azooKeyプロセスをkill
+   pkill azooKeyMac
+   ```
+
+2. **入力ソースのリセット**
+   - システム設定から入力ソースを削除・再追加
+   - macOSからログアウト・再ログイン
+
+3. **ログの確認**
+   - Console.appでのログ監視
+   - デバッグ用のprint文の活用
+
+### パフォーマンス分析
+- Instrumentsを使用したプロファイリング
+- メモリリークの検出
+- CPU使用率の監視
+
+## 品質保証
+
+### 静的解析
+- [.swiftlint.yml](mdc:.swiftlint.yml)によるコード品質チェック
+- Xcodeの静的解析機能
+- 未使用コードの検出
+
+### 動作確認項目
+1. **基本機能**
+   - ひらがな入力
+   - 漢字変換
+   - 候補選択
+
+2. **高度な機能**
+   - ライブ変換
+   - LLMによる「いい感じ変換」
+   - ユーザー辞書
+
+3. **システム連携**
+   - 他のアプリケーションでの動作
+   - システム設定との連携
+   - 入力ソース切り替え
+
+## トラブルシューティング
+
+### よくある問題
+1. **ビルドエラー**
+   - Git LFSの初期化不足
+   - サブモジュールの更新不足
+   - コード署名の問題
+
+2. **実行時エラー**
+   - 機械学習モデルの読み込み失敗
+   - 権限不足
+   - メモリ不足
+
+3. **変換精度の問題**
+   - モデルファイルのサイズ確認
+   - 学習データの更新
+   - 設定の見直し
+
+### デバッグツール
+- Xcode Debugger
+- LLDB
+- Console.app
+- Activity Monitor

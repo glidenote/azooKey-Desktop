@@ -1,0 +1,85 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# アーキテクチャパターン
+
+## 全体アーキテクチャ
+
+### Input Method Framework
+azooKey-DesktopはmacOSのInput Method Frameworkを使用して実装されています。
+
+- **NSManualApplication**: アプリケーションのメインクラス
+- **InputMethodServerController**: 入力メソッドサーバーの制御
+- **TISInputSource**: 入力ソースの管理
+
+### 主要コンポーネント
+
+#### 1. 入力制御層
+- [azooKeyMacInputController.swift](mdc:azooKeyMac/InputController/azooKeyMacInputController.swift)
+  - IMKInputControllerを継承
+  - キーボード入力の処理
+  - 変換候補の管理
+
+#### 2. セグメント管理
+- [SegmentsManager.swift](mdc:azooKeyMac/InputController/SegmentsManager.swift)
+  - 入力文字列のセグメント化
+  - 変換範囲の管理
+  - 候補選択の処理
+
+#### 3. ユーザーアクション処理
+- [UserAction+getUserAction.swift](mdc:azooKeyMac/InputController/UserAction+getUserAction.swift)
+  - キーボードイベントの解釈
+  - ユーザーアクションの分類
+  - アクションに応じた処理の振り分け
+
+## 設計原則
+
+### 1. 責任の分離
+- 各クラスは単一の責任を持つ
+- 入力処理、変換処理、UI表示を分離
+- テスタブルな設計
+
+### 2. 拡張性
+- プラグイン可能なアーキテクチャ
+- 新しい変換エンジンの追加が容易
+- 設定の動的変更に対応
+
+### 3. パフォーマンス
+- リアルタイム入力処理
+- メモリ効率的な候補管理
+- バックグラウンド処理の活用
+
+## データフロー
+
+```
+キーボード入力
+    ↓
+azooKeyMacInputController
+    ↓
+SegmentsManager
+    ↓
+変換エンジン（Zenzai）
+    ↓
+候補ウィンドウ表示
+    ↓
+確定・挿入
+```
+
+## 外部依存関係
+
+### Core Package
+- [Core/](mdc:Core/) - 共通ライブラリ
+- 変換エンジンのインターフェース
+- ユーティリティ関数
+
+### リソース
+- [Resources/](mdc:azooKeyMac/Resources/) - 機械学習モデル
+- 辞書データ
+- 設定ファイル
+
+## エラーハンドリング
+- 入力エラーの適切な処理
+- 変換失敗時のフォールバック
+- ログ出力による問題の追跡
