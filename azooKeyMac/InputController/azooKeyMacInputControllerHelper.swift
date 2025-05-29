@@ -5,10 +5,11 @@ extension azooKeyMacInputController {
     // MARK: - Settings and Menu Items
 
     func setupMenu() {
-        self.zenzaiToggleMenuItem = NSMenuItem(title: "ZenzaiをOFF", action: #selector(self.toggleZenzai(_:)), keyEquivalent: "")
-        self.liveConversionToggleMenuItem = NSMenuItem(title: "ライブ変換をOFF", action: #selector(self.toggleLiveConversion(_:)), keyEquivalent: "")
+        self.zenzaiToggleMenuItem = NSMenuItem(title: "Zenzai", action: #selector(self.toggleZenzai(_:)), keyEquivalent: "")
+        self.liveConversionToggleMenuItem = NSMenuItem(title: "ライブ変換", action: #selector(self.toggleLiveConversion(_:)), keyEquivalent: "")
         self.appMenu.addItem(self.zenzaiToggleMenuItem)
         self.appMenu.addItem(self.liveConversionToggleMenuItem)
+        self.appMenu.addItem(NSMenuItem.separator())
         self.appMenu.addItem(NSMenuItem(title: "詳細設定を開く", action: #selector(self.openConfigWindow(_:)), keyEquivalent: ""))
         self.appMenu.addItem(NSMenuItem(title: "View on GitHub", action: #selector(self.openGitHubRepository(_:)), keyEquivalent: ""))
     }
@@ -21,11 +22,11 @@ extension azooKeyMacInputController {
     }
 
     func updateZenzaiToggleMenuItem(newValue: Bool) {
-        self.zenzaiToggleMenuItem.title = if newValue {
-            "ZenzaiをOFF"
-        } else {
-            "ZenzaiをON"
-        }
+        self.zenzaiToggleMenuItem.state = newValue ? .on : .off
+        self.zenzaiToggleMenuItem.title = "Zenzai（ニューラル変換）"
+        self.zenzaiToggleMenuItem.toolTip = newValue ?
+            "Zenzaiが有効です。高精度なニューラル変換を使用しています。" :
+            "Zenzaiが無効です。従来の変換エンジンを使用しています。"
     }
 
     @objc func toggleLiveConversion(_ sender: Any) {
@@ -36,7 +37,11 @@ extension azooKeyMacInputController {
     }
 
     func updateLiveConversionToggleMenuItem(newValue: Bool) {
-        self.liveConversionToggleMenuItem.title = newValue ? "ライブ変換をOFF" : "ライブ変換をON"
+        self.liveConversionToggleMenuItem.state = newValue ? .on : .off
+        self.liveConversionToggleMenuItem.title = "ライブ変換"
+        self.liveConversionToggleMenuItem.toolTip = newValue ?
+            "ライブ変換が有効です。入力中に自動で変換候補を表示します。" :
+            "ライブ変換が無効です。スペースキーで変換候補を表示します。"
     }
 
     @objc func openGitHubRepository(_ sender: Any) {
