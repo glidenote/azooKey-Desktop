@@ -24,7 +24,7 @@ extension azooKeyMacInputController {
 
     func updateZenzaiToggleMenuItem(newValue: Bool) {
         self.zenzaiToggleMenuItem.state = newValue ? .on : .off
-        self.zenzaiToggleMenuItem.title = "Zenzai（ニューラル変換）"
+        self.zenzaiToggleMenuItem.title = "Zenzai（ニューラルかな漢字変換）"
         self.zenzaiToggleMenuItem.toolTip = newValue ?
             "Zenzaiが有効です。高精度なニューラル変換を使用しています。" :
             "Zenzaiが無効です。従来の変換エンジンを使用しています。"
