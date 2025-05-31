@@ -11,6 +11,7 @@ extension azooKeyMacInputController {
         self.appMenu.addItem(self.liveConversionToggleMenuItem)
         self.appMenu.addItem(NSMenuItem.separator())
         self.appMenu.addItem(NSMenuItem(title: "詳細設定を開く", action: #selector(self.openConfigWindow(_:)), keyEquivalent: ""))
+        self.appMenu.addItem(NSMenuItem(title: "ユーザー辞書を編集する", action: #selector(self.openUserDictionaryEditor(_:)), keyEquivalent: ""))
         self.appMenu.addItem(NSMenuItem(title: "View on GitHub", action: #selector(self.openGitHubRepository(_:)), keyEquivalent: ""))
     }
 
@@ -53,6 +54,10 @@ extension azooKeyMacInputController {
 
     @objc func openConfigWindow(_ sender: Any) {
         (NSApplication.shared.delegate as? AppDelegate)!.openConfigWindow()
+    }
+
+    @objc func openUserDictionaryEditor(_ sender: Any) {
+        (NSApplication.shared.delegate as? AppDelegate)!.openUserDictionaryEditorWindow()
     }
 
     // MARK: - Application Support Directory
