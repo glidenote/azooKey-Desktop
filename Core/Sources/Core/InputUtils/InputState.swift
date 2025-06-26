@@ -281,7 +281,14 @@ public enum InputState: Sendable, Hashable {
                 return (.consume, .fallthrough)
             case .英数:
                 return (.commitMarkedTextAndSelectInputLanguage(.english), .transition(.none))
-            case .unknown, .suggest, .tab, .transformSelectedText, .deadKey:
+            case .tab:
+                // シフトが入っている場合は前の候補に移動、そうでなければ次の候補に移動
+                if event.modifierFlags.contains(.shift) {
+                    return (.selectPrevCandidate, .fallthrough)
+                } else {
+                    return (.selectNextCandidate, .fallthrough)
+                }
+            case .unknown, .suggest, .transformSelectedText, .deadKey:
                 return (.fallthrough, .fallthrough)
             }
         case .replaceSuggestion:
